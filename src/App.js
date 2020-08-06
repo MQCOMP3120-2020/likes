@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import './App.css' 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const ListEntry = (props) => {
+  return (<li className="listEntry">{props.content}</li>)
 }
 
-export default App;
+const App = () => { 
+
+  const [things, setThings] = useState(['eggs', 'cheese'])
+  const [newThing, setNewThing] = useState('')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setThings([...things, newThing])
+    setNewThing('')
+    console.log("form submitted", things)
+
+  }
+
+  const handleNewThing = (event) => {
+    event.preventDefault()
+    console.log(event.target.value)
+    setNewThing(event.target.value)
+  }
+
+  return (
+    <div className="App">
+      <form onSubmit={handleSubmit}>
+        <label>What do you like?</label>
+        <input value={newThing} onChange={handleNewThing}></input>
+        <input type='submit'></input>
+      </form>
+      
+      <p>Here are the things that you like:</p> 
+      <ul>
+        {things.map((thing) => <ListEntry key={thing} content={thing} />) } 
+      </ul> 
+    </div>
+  )
+}
+
+export default App
