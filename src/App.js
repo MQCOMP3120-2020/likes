@@ -2,21 +2,28 @@ import React, {useState} from 'react'
 import './App.css' 
 
 
-const ListEntry = (props) => {
-  return (<li className="listEntry">{props.content}</li>)
+
+const List = (props) => {
+
+  const {contents} = props 
+
+  return (
+    <ul>
+      {contents.map((item) => <li key={item.id}>{item.content}</li>) } 
+    </ul> 
+  )
 }
 
 const App = () => { 
 
-  const [things, setThings] = useState(['eggs', 'cheese'])
+  const [things, setThings] = useState([])
   const [newThing, setNewThing] = useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setThings([...things, newThing])
+    setThings([...things, {id: things.length, content: newThing}])
     setNewThing('')
     console.log("form submitted", things)
-
   }
 
   const handleNewThing = (event) => {
@@ -34,9 +41,7 @@ const App = () => {
       </form>
       
       <p>Here are the things that you like:</p> 
-      <ul>
-        {things.map((thing) => <ListEntry key={thing} content={thing} />) } 
-      </ul> 
+      <List contents={things}/>
     </div>
   )
 }
