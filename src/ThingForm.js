@@ -6,7 +6,6 @@ const ThingForm = ({updateFn}) => {
   
     const handleNewThing = (event) => {
       event.preventDefault()
-      console.log(event.target.value)
       setNewThing(event.target.value)
     }
   
@@ -14,7 +13,6 @@ const ThingForm = ({updateFn}) => {
       event.preventDefault()
       updateFn(newThing)
       setNewThing("")
-      console.log("the form was handled")
     }
   
     return (
