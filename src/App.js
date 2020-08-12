@@ -10,8 +10,14 @@ const App = () => {
   const [things, setThings] = useState([])
 
   const addNewThing = (content) => {
-    setThings([...things, {id: things.length, content: content}])
-    console.log("new thing added", content)
+
+    axios.post('http://localhost:3001/likes', {content: content})
+    .then(response => {
+        console.log("POST response: ", response.data)
+        setThings([...things, response.data])
+        console.log("new thing added", content)
+      }
+    )
   }
 
   useEffect(() => {
@@ -22,7 +28,7 @@ const App = () => {
        setThings(response.data)
      })
   }, 
-  [])
+  []) 
   
   console.log("We are rendering the App component")
   return (
