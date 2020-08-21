@@ -1,20 +1,33 @@
 {
   "likes": [
     {
+      "content": "eggs",
+      "votes": 14,
+      "id": 1
+    },
+    {
+      "content": "cheese",
+      "votes": 14,
+      "id": 2
+    },
+    {
+      "content": "bread",
+      "votes": 7,
+      "id": 3
+    }
+  ],
+  "users": [
+    {
       "id": 0,
-      "content": "cheese"
+      "username": "contrary",
+      "name": "Mary Contrary",
+      "password": "$2b$10$cEztJ.ZeVc1niZBhTu9vhOTawg5o/4N8JGpz9Aiairg1qTN5XB4gi"
     },
     {
       "id": 1,
-      "content": "eggs"
-    },
-    {
-      "id": 2,
-      "content": "pasta"
-    },
-    {
-      "id": 3,
-      "content": "fruit"
+      "username": "bobalooba",
+      "name": "Bob Bobalooba",
+      "password": "$2b$10$hWje2GoSXlXT1MA4pssDtO/6EYCzZlZyiUje6br/7w0lRppbFlmxK"
     }
   ]
 }

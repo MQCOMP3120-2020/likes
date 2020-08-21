@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/likes
+Content-Type: application/json
+
+{
+    "content": "New thing I like",
+    "votes": 0
+}
