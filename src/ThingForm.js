@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, {useState} from 'react'
 
-const ThingForm = ({updateFn}) => {
+const ThingForm = ({user, updateFn}) => {
 
     const [newThing, setNewThing] = useState('')
   
@@ -15,13 +16,17 @@ const ThingForm = ({updateFn}) => {
       setNewThing("")
     }
   
-    return (
-      <form onSubmit={formHandler}>
-      <label>What do you like?</label>
-      <input value={newThing} onChange={handleNewThing}></input>
-      <input type='submit'></input>
-    </form>
-    )
+    if (user) {
+      return (
+        <form onSubmit={formHandler}>
+            <label>What do you like?</label>
+            <input className="u-full-width" value={newThing} onChange={handleNewThing}></input>
+            <input className="button-primary" type='submit'></input>
+      </form>
+      )
+    } else {
+      return (<p>Login to post things you like  </p>)
+    }
   }
 
   export default ThingForm

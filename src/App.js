@@ -3,15 +3,39 @@ import './App.css'
 import List from './List.js'
 import ThingForm from './ThingForm.js'
 import likesService from './services/likes'
-
+import LoginForm from './LoginForm'
 
 const App = () => { 
 
   const [things, setThings] = useState([])
+  const [user, setUser] = useState(null)
+
+  const addVote = thing => {
+    console.log("addVote", thing)
+    const newThing = {...thing, votes: thing.votes+1}
+    console.log("updated vote in item", newThing)
+    likesService.update(newThing)
+        .then(data => {
+          // replace old thing in things array with newthing - match on id
+          console.log("got response", data)
+          const newThings = things.map(
+              thing => thing.id !== data.id ? thing : data 
+            )
+          setThings(newThings)
+        })
+        .then(()=> {
+          console.log("the next then")
+        })
+        .catch(
+          (error) => {
+            alert("There was an error!")
+          }
+        )
+  }
 
   const addNewThing = (content) => {
 
-    likesService.create({content: content})
+    likesService.create({content: content, votes: 0})
     .then(object => {
         console.log("POST response: ", object)
         setThings([...things, object])
@@ -29,14 +53,25 @@ const App = () => {
      })
   }, 
   []) 
-  
-  console.log("We are rendering the App component")
+
   return (
     <div className="App">
-      <ThingForm updateFn={addNewThing}/> 
-      
-      <p>Here are the things that you like:</p> 
-      <List contents={things}/>
+
+    <div className="row">
+      <div className="u-pull-right">
+        <LoginForm user={user} setUser={setUser}/>
+      </div>
+    </div>
+
+    <div className="row">
+      <div className="five columns">
+        <ThingForm user={user} updateFn={addNewThing}/> 
+      </div>
+      <div className="seven columns">
+        <p>Here are the things that you like:</p> 
+        <List addVote={addVote} contents={things}/>
+      </div>
+    </div>
     </div>
   )
 }
