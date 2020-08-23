@@ -30,5 +30,17 @@ const update = (thing) => {
                 .then(response => response.data)
 }
 
-export default {getAll, create, update} 
+
+/**
+ * Send a login request
+ * @param {Object} param0 {username, password} 
+ * @returns {Promise} Promise that will resolve to the response data
+ */
+const login = ({username, password}) => {
+
+    return axios.post(baseURL + 'login', {username, password})
+    .then(response => response.data)
+}
+
+export default {getAll, create, update, login} 
 

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, {useState} from 'react'
-import loginService from './services/login.js'
+import likesService from './services/likes.js'
 
 const LoginForm = ({user, setUser}) => {
 
@@ -11,7 +11,7 @@ const LoginForm = ({user, setUser}) => {
       event.preventDefault()
       console.log("Form Submitted", username, password)
     
-      loginService.login({username, password})
+      likesService.login({username, password})
         .then(data => {
             console.log("Success:", data)
             setUser(data)
