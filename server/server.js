@@ -17,6 +17,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
 app.get('/api/likes', (req, res) => {
     console.log("GET")
@@ -32,6 +33,14 @@ app.post('/api/likes', (req, res) => {
     }
     data.likes.push(newLike) 
     res.json(newLike)
+})
+
+app.put('/api/likes/:id', (req, res) => {
+    const newlike = req.body
+    const id = Number(req.params.id)
+    data.likes = data.likes.map(e => id === e.id ? newlike : e)
+    console.log("updated", newlike)
+    res.json(newlike)
 })
 
 // handle post request for login with {username, password}
