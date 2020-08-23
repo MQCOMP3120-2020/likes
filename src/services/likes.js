@@ -1,12 +1,12 @@
 import axios from 'axios'
-const baseURL = "http://localhost:3001/api/likes"
+const baseURL = "http://localhost:3001/api/"
 
 /**
  * Get a list of all liked things from the api
  * @return {Promise}    Promise that will resolve to the response data
  */
 const getAll = () => {
-    return axios.get(baseURL)
+    return axios.get(baseURL + "likes")
                 .then(response => response.data)
 }
 
@@ -16,7 +16,7 @@ const getAll = () => {
  * @returns {Promise} Promise that will resolve to the response data
  */
 const create = (newObject) => {
-    return axios.post(baseURL, newObject)
+    return axios.post(baseURL + "likes", newObject)
                 .then(response => response.data)
 }
 
@@ -26,7 +26,7 @@ const create = (newObject) => {
  * @returns {Promise} Promise that will resolve to the response data
  */
 const update = (thing) => {
-    return axios.put(baseURL + "/" + thing.id, thing)
+    return axios.put(baseURL + "likes/" + thing.id, thing)
                 .then(response => response.data)
 }
 
@@ -38,6 +38,7 @@ const update = (thing) => {
  */
 const login = ({username, password}) => {
 
+    console.log("POST", baseURL + 'login')
     return axios.post(baseURL + 'login', {username, password})
     .then(response => response.data)
 }
