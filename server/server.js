@@ -4,6 +4,8 @@ const cors = require("cors")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
+const SECRET = "a secret string"
+
 // Load data from JSON file into memory
 const rawData = fs.readFileSync("server/sample.json")
 const data = JSON.parse(rawData)
@@ -12,6 +14,13 @@ const getUser = (username) => {
     return data.users.filter(u => u.username === username)[0]
 }
 
+const getTokenFrom = request => {
+    const authorization = request.get('authorization') 
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) { 
+           return authorization.substring(7)  
+        }  
+    return null
+}
 
 const app = express() 
 
@@ -25,10 +34,19 @@ app.get('/api/likes', (req, res) => {
 })
 
 app.post('/api/likes', (req, res) => {
+
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token, SECRET)
+
+    if (!token || !decodedToken.id) {
+        return res.status(401).json({error: "invalid token"})
+    }
+
     const body = req.body
     const newLike = {
         content: body.content,
         votes: 0,
+        user: decodedToken.id,
         id: data.likes.length   
     }
     data.likes.push(newLike) 
@@ -62,7 +80,7 @@ app.post('/api/login', async (req, res) => {
             id: user.id,
             username: user.username            
         }
-        const token = jwt.sign(userForToken, "secret")
+        const token = jwt.sign(userForToken, SECRET)
 
         return res.status(200).json({token, username: user.username, name: user.name})
         

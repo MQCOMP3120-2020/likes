@@ -13,10 +13,18 @@ const getAll = () => {
 /**
  * 
  * @param {Object} newObject 
+ * @param {Object} user - the current logged in user
  * @returns {Promise} Promise that will resolve to the response data
  */
-const create = (newObject) => {
-    return axios.post(baseURL + "likes", newObject)
+const create = (newObject, user) => {
+
+    if (!user) {
+        return new Promise(() => null)
+    }
+
+    const config = {headers: {Authorization: "Bearer " + user.token + "xyzzy"}  }
+
+    return axios.post(baseURL + "likes", newObject, config)
                 .then(response => response.data)
 }
 
@@ -29,7 +37,6 @@ const update = (thing) => {
     return axios.put(baseURL + "likes/" + thing.id, thing)
                 .then(response => response.data)
 }
-
 
 /**
  * Send a login request

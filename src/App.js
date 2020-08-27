@@ -35,7 +35,7 @@ const App = () => {
 
   const addNewThing = (content) => {
 
-    likesService.create({content: content, votes: 0})
+    likesService.create({content: content, votes: 0}, user)
     .then(object => {
         console.log("POST response: ", object)
         setThings([...things, object])
