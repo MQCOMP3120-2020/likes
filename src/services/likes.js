@@ -22,7 +22,7 @@ const create = (newObject, user) => {
         return new Promise(() => null)
     }
 
-    const config = {headers: {Authorization: "Bearer " + user.token + "xyzzy"}  }
+    const config = {headers: {Authorization: "Bearer " + user.token}  }
 
     return axios.post(baseURL + "likes", newObject, config)
                 .then(response => response.data)
