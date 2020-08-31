@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/likes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJib2JhbG9vYmEiLCJpYXQiOjE1OTg1ODAzNTJ9.IkQJAuM10Ghfnbuo-KUM4y34XT-PL6XnVC9gKHHVtSk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJib2JhbG9vYmEiLCJpYXQiOjE1OTg1ODkwOTR9.kGNUZDn_gHBgidY2vp4sD6irr1qvtGXBOv0M2bnhvG8
 
 {
     "content": "New thing I like",

@@ -2,6 +2,8 @@ const express = require('express')
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const fs = require("fs") 
+const Like = require("../models/likes")
+
 
 const SECRET = process.env.SECRET
 
@@ -25,8 +27,11 @@ const getTokenFrom = request => {
 const apiRouter = express.Router()
 
 apiRouter.get('/api/likes', (req, res) => {
-    console.log("GET")
-    res.json(data.likes)
+
+    Like.find({}).then(result => {
+        console.log(result)
+        res.json(result)
+    })
 })
 
 apiRouter.post('/api/likes', (req, res) => {
@@ -39,22 +44,30 @@ apiRouter.post('/api/likes', (req, res) => {
     }
 
     const body = req.body
-    const newLike = {
+
+    const newLike = new Like({
         content: body.content,
         votes: 0,
-        user: decodedToken.id,
-        id: data.likes.length   
-    }
-    data.likes.push(newLike) 
-    res.json(newLike)
+        user: decodedToken.id
+    })
+    newLike.save().then(result => {
+        res.json(result)
+    })
 })
 
 apiRouter.put('/api/likes/:id', (req, res) => {
     const newlike = req.body
-    const id = Number(req.params.id)
-    data.likes = data.likes.map(e => id === e.id ? newlike : e)
-    console.log("updated", newlike)
-    res.json(newlike)
+
+    const newLike = new Like({
+        content: req.body.content,
+        votes: req.body.votes,
+    })
+
+    Like.findByIdAndUpdate(req.params.id, newLike, {new: true})
+    .then(result => {
+        res.json(result)
+        console.log("updated", result)
+    })   
 })
 
 // handle post request for login with {username, password}
@@ -87,5 +100,3 @@ apiRouter.post('/api/login', async (req, res) => {
 })
 
 module.exports = apiRouter
-
-
