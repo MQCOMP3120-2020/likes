@@ -23,13 +23,11 @@ const getTokenFrom = request => {
     return null
 }
 
-
 const apiRouter = express.Router()
 
 apiRouter.get('/api/likes', (req, res) => {
 
     Like.find({}).then(result => {
-        console.log(result)
         res.json(result)
     })
 })
@@ -37,7 +35,15 @@ apiRouter.get('/api/likes', (req, res) => {
 apiRouter.post('/api/likes', (req, res) => {
 
     const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token, SECRET)
+    let decodedToken = null
+
+    console.log(token)
+    try {
+        decodedToken = jwt.verify(token, SECRET)
+    }
+    catch {
+        decodedToken = {id: null}
+    }
 
     if (!token || !decodedToken.id) {
         return res.status(401).json({error: "invalid token"})
@@ -56,13 +62,12 @@ apiRouter.post('/api/likes', (req, res) => {
 })
 
 apiRouter.put('/api/likes/:id', (req, res) => {
-    const newlike = req.body
 
-    const newLike = new Like({
+    const newLike = {
         content: req.body.content,
         votes: req.body.votes,
-    })
-
+    }
+    
     Like.findByIdAndUpdate(req.params.id, newLike, {new: true})
     .then(result => {
         res.json(result)
@@ -76,14 +81,12 @@ apiRouter.post('/api/login', async (req, res) => {
     const {username, password} = req.body
 
     const user = getUser(username)
-    console.log(user)
 
     if (!user) {
         return res.status(401).json({error: "invalid username or password"})
     }
 
     if (await bcrypt.compare(password, user.password)) {
-        console.log("Password is good!")
         
         const userForToken = {
             id: user.id,

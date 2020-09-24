@@ -24,6 +24,8 @@ const create = (newObject, user) => {
 
     const config = {headers: {Authorization: "Bearer " + user.token}  }
 
+    console.log(config)
+    
     return axios.post(baseURL + "likes", newObject, config)
                 .then(response => response.data)
 }
