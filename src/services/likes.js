@@ -19,7 +19,7 @@ const getAll = () => {
 const create = (newObject, user) => {
 
     if (!user) {
-        return new Promise(() => null)
+        return new Promise((res) => res(null))
     }
 
     const config = {headers: {Authorization: "Bearer " + user.token}  }

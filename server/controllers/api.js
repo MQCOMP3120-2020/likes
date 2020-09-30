@@ -37,7 +37,6 @@ apiRouter.post('/api/likes', (req, res) => {
     const token = getTokenFrom(req)
     let decodedToken = null
 
-    console.log(token)
     try {
         decodedToken = jwt.verify(token, SECRET)
     }
@@ -71,7 +70,6 @@ apiRouter.put('/api/likes/:id', (req, res) => {
     Like.findByIdAndUpdate(req.params.id, newLike, {new: true})
     .then(result => {
         res.json(result)
-        console.log("updated", result)
     })   
 })
 

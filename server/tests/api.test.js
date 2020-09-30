@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const mongoose = require('mongoose') 
 const supertest = require('supertest')
 const fs = require('fs')

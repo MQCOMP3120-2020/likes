@@ -34,11 +34,11 @@ const LoginForm = ({user, setUser}) => {
                     <div className="row">
                         <div className="four columns">
                             <label htmlFor="username">Username</label>
-                            <input type="text" name="username" onChange={e => setUsername(e.target.value)} />
+                            <input id="username" type="text" name="username" onChange={e => setUsername(e.target.value)} />
                         </div>
                         <div className="four columns">
                             <label htmlFor="password">Password</label>
-                            <input name="password" type="password" onChange={e => setPassword(e.target.value)} />
+                            <input id="password" name="password" type="password" onChange={e => setPassword(e.target.value)} />
                         </div>
                         <div className="three columns">
                             <input type="submit" value="Login"/>
