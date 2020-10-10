@@ -90,7 +90,13 @@ apiRouter.post('/api/login', async (req, res) => {
             id: user.id,
             username: user.username            
         }
-        const token = jwt.sign(userForToken, SECRET)
+        let token = null
+        try {
+            token = jwt.sign(userForToken, SECRET)
+        } 
+        catch {
+            return res.status(401).json({error: "invalid token"})
+        }
 
         return res.status(200).json({token, username: user.username, name: user.name})
         
