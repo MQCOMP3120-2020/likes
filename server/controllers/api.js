@@ -32,6 +32,17 @@ apiRouter.get('/api/likes', (req, res) => {
     })
 })
 
+apiRouter.get('/api/likes/:id', (req, res) => {
+
+    Like.findById(req.params.id)
+        .then(result => {
+            res.json(result)
+        })
+        .catch(err => {
+            res.status(404).json({error: "Not found"})
+        })
+})
+
 apiRouter.post('/api/likes', (req, res) => {
 
     const token = getTokenFrom(req)

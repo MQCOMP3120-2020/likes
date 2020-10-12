@@ -67,7 +67,15 @@ describe('api', () => {
 
     })
 
-
+    test('get one like returns correct record', async () => {
+        // get all the likes and select the first one
+        const response = await api.get('/api/likes')
+        const sample = response.body[0]
+        await api.get('/api/likes/' + sample.id)
+                 .expect(200)
+                 .expect('Content-Type', /application\/json/)
+                 .expect(sample)  // correct content
+    })
 
     test('login fails with incorrect username', async () => {
 
