@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const fs = require("fs") 
 const Like = require("../models/likes")
-
+const session = require('express-session')
 
 const SECRET = process.env.SECRET
 
@@ -85,7 +85,7 @@ apiRouter.put('/api/likes/:id', (req, res) => {
 })
 
 // handle post request for login with {username, password}
-apiRouter.post('/api/login', async (req, res) => {
+apiRouter.post('/auth/login', async (req, res) => {
 
     const {username, password} = req.body
 
@@ -109,12 +109,28 @@ apiRouter.post('/api/login', async (req, res) => {
             return res.status(401).json({error: "invalid token"})
         }
 
+        // store the token in the user session
+        req.session.token = token
         return res.status(200).json({token, username: user.username, name: user.name})
         
     } else {
         return res.status(401).json({error: "invalid username or password"})
     }
 
+})
+
+
+// handle post request for login with {username, password}
+apiRouter.get('/auth/refresh', async (req, res) => {
+
+    if (req.session.token) {
+        const decoded = jwt.verify(req.session.token, SECRET)
+        const user = getUser(decoded.username)
+
+        return res.status(200).json({token: req.session.token, username: user.username, name: user.name})
+    } else {
+        return res.status(401).json({error: "no or invalid cookie"})
+    }
 })
 
 module.exports = apiRouter

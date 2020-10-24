@@ -49,9 +49,15 @@ describe('api', () => {
             password: 'bob'
         }
 
-        await api.post('/api/login')
+        await api.post('/auth/login')
                  .send(data)
                  .expect(200)
+                 .expect('Content-Type', /application\/json/)
+                 .expect('Set-Cookie', /.*/)
+                 .then((res) => {
+                    expect(res.body.username).toBe(data.username)
+                    expect(res.body.name).toBe('Bob Bobalooba')
+                })
     })
 
     test('login fails with incorrect password', async () => {
@@ -61,10 +67,35 @@ describe('api', () => {
             password: 'notbob'
         }
 
-        await api.post('/api/login')
+        await api.post('/auth/login')
                  .send(data)
                  .expect(401)
 
+    })
+
+    test('refresh token with session cookie', async () => {
+
+        const data = {
+            username: 'bobalooba',
+            password: 'bob'
+        }
+
+        const response = await api.post('/auth/login')
+                                  .send(data)
+                                  .expect(200)
+
+        // Save the cookie to use it later to retrieve the session
+        const cookies = response.headers['set-cookie'].pop().split(';')[0];
+        expect(cookies.startsWith('connect.sid'))
+
+        await api.get('/auth/refresh')
+                 .set('Cookie', cookies)
+                 .expect(200)
+                 .expect('Content-Type', /application\/json/)
+                 .then((res) => {
+                     expect(res.body.username).toBe(data.username)
+                     expect(res.body.name).toBe('Bob Bobalooba')
+                 })
     })
 
     test('get one like returns correct record', async () => {
@@ -84,7 +115,7 @@ describe('api', () => {
             password: 'notbob'
         }
 
-        await api.post('/api/login')
+        await api.post('/auth/login')
                  .send(data)
                  .expect(401)
     })
