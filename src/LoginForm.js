@@ -9,8 +9,7 @@ const LoginForm = ({user, setUser}) => {
 
     const formHandler = (event) => {
       event.preventDefault()
-      console.log("Form Submitted", username, password)
-    
+
       likesService.login({username, password})
         .then(data => {
             console.log("Success:", data)
@@ -21,7 +20,7 @@ const LoginForm = ({user, setUser}) => {
             console.log("Error:", error)
         })
     }
-  
+
     if (user) {
         return (
             <div className="row">

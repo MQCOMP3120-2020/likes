@@ -45,14 +45,20 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log("effect is being run")
-    likesService.getAll()
-     .then(objects => {
-       console.log("we have a response", objects)
-       setThings(objects)
-     })
-  }, 
-  []) 
+      likesService.getAll()
+      .then(objects => {
+        setThings(objects)
+      })
+      // try to refresh our user token
+      // just in case we're already logged in
+      likesService.refreshToken()
+          .then(token => {
+              if (token) {
+                  setUser(token)
+              }
+          })
+    }, 
+    []) 
 
   return (
     <div className="App">
