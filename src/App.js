@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import './App.css' 
-import List from './List.js'
-import ThingForm from './ThingForm.js'
+import List from './components/List.js'
+import ThingForm from './components/ThingForm.js'
 import likesService from './services/likes'
-import LoginForm from './LoginForm'
+import LoginForm from './components/LoginForm'
 
 const App = () => { 
 
