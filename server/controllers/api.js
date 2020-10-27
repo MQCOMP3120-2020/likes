@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const fs = require("fs") 
 const Like = require("../models/likes")
-const session = require('express-session')
 
 const SECRET = process.env.SECRET
 
@@ -38,7 +37,7 @@ apiRouter.get('/api/likes/:id', (req, res) => {
         .then(result => {
             res.json(result)
         })
-        .catch(err => {
+        .catch(() => {
             res.status(404).json({error: "Not found"})
         })
 })
@@ -51,7 +50,7 @@ apiRouter.post('/api/likes', (req, res) => {
     try {
         decodedToken = jwt.verify(token, SECRET)
     }
-    catch {
+    catch (error) {
         decodedToken = {id: null}
     }
 
@@ -105,7 +104,7 @@ apiRouter.post('/auth/login', async (req, res) => {
         try {
             token = jwt.sign(userForToken, SECRET)
         } 
-        catch {
+        catch (error) {
             return res.status(401).json({error: "invalid token"})
         }
 
