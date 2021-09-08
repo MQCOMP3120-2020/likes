@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken")
 const fs = require("fs") 
 const Like = require("../models/likes")
 
-
 const SECRET = process.env.SECRET
 
 // Load data from JSON file into memory
@@ -38,7 +37,7 @@ apiRouter.get('/api/likes/:id', (req, res) => {
         .then(result => {
             res.json(result)
         })
-        .catch(err => {
+        .catch(() => {
             res.status(404).json({error: "Not found"})
         })
 })
@@ -51,7 +50,7 @@ apiRouter.post('/api/likes', (req, res) => {
     try {
         decodedToken = jwt.verify(token, SECRET)
     }
-    catch {
+    catch (error) {
         decodedToken = {id: null}
     }
 
@@ -85,7 +84,7 @@ apiRouter.put('/api/likes/:id', (req, res) => {
 })
 
 // handle post request for login with {username, password}
-apiRouter.post('/api/login', async (req, res) => {
+apiRouter.post('/auth/login', async (req, res) => {
 
     const {username, password} = req.body
 
@@ -105,16 +104,32 @@ apiRouter.post('/api/login', async (req, res) => {
         try {
             token = jwt.sign(userForToken, SECRET)
         } 
-        catch {
+        catch (error) {
             return res.status(401).json({error: "invalid token"})
         }
 
+        // store the token in the user session
+        req.session.token = token
         return res.status(200).json({token, username: user.username, name: user.name})
         
     } else {
         return res.status(401).json({error: "invalid username or password"})
     }
 
+})
+
+
+// handle post request for login with {username, password}
+apiRouter.get('/auth/refresh', async (req, res) => {
+
+    if (req.session.token) {
+        const decoded = jwt.verify(req.session.token, SECRET)
+        const user = getUser(decoded.username)
+
+        return res.status(200).json({token: req.session.token, username: user.username, name: user.name})
+    } else {
+        return res.status(401).json({error: "no or invalid cookie"})
+    }
 })
 
 module.exports = apiRouter

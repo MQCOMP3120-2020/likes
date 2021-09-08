@@ -23,8 +23,6 @@ const create = (newObject, user) => {
     }
 
     const config = {headers: {Authorization: "Bearer " + user.token}  }
-
-    console.log(config)
     
     return axios.post(baseURL + "likes", newObject, config)
                 .then(response => response.data)
@@ -47,10 +45,16 @@ const update = (thing) => {
  */
 const login = ({username, password}) => {
 
-    console.log("POST", baseURL + 'login')
-    return axios.post(baseURL + 'login', {username, password})
-    .then(response => response.data)
+    return axios.post('/auth/login', {username, password})
+                .then(response => response.data)
 }
 
-export default {getAll, create, update, login} 
+const refreshToken = () => {
+
+    return axios.get('/auth/refresh')
+                .then(response => response.data)
+                .catch(() => null)
+}
+
+export default {getAll, create, update, login, refreshToken} 
 
