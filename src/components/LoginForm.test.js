@@ -5,7 +5,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render } from '@testing-library/react'
 import LoginForm from './LoginForm'
-import likesService from './services/likes.js'
+import likesService from '../services/likes.js'
 
 jest.mock('./services/likes.js')
 

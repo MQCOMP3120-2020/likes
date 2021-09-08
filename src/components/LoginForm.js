@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, {useState} from 'react'
-import likesService from './services/likes.js'
+import likesService from '../services/likes.js'
 
 const LoginForm = ({user, setUser}) => {
 

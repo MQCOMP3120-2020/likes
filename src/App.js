@@ -3,7 +3,7 @@ import './App.css'
 import List from './components/List.js'
 import ThingForm from './components/ThingForm.js'
 import likesService from './services/likes'
-import LoginForm from './components/LoginForm'
+import LoginForm from './LoginForm'
 
 const App = () => { 
 
