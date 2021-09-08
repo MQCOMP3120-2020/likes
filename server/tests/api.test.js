@@ -15,14 +15,16 @@ const api = supertest(app)
  * 
  * @param {String} fileName JSON data filename
  */
-const sampleData =  (fileName) => {
+const sampleData =  async (fileName) => {
     const rawData = fs.readFileSync(fileName)
     const data = JSON.parse(rawData)
 
-    data.likes.map(async record => { 
+    // use a for loop rather than map because we want await
+    for(let i=0; i<data.likes.length; i++) {
+        const record = data.likes[i]
         const l = new Like(record)
         await l.save() 
-    })
+    }
 }
 
 describe('api', () => {

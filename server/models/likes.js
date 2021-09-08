@@ -2,13 +2,16 @@ const mongoose = require('mongoose')
 
 const url = process.env.MONGO_URL
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-        console.log('connected to MongoDB')  
-    })  
-    .catch((error) => {    
-        console.log('error connecting to MongoDB:', error.message)
-    })
+// we want the database connection to happen synchronously so we define
+// this async function and use await on the connect call
+const doConnect = async () => {
+  await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })  
+      .catch((error) => {    
+          console.log('error connecting to MongoDB:', error.message)
+      })
+  }
+// call the connection function
+doConnect()
 
 const likeSchema = new mongoose.Schema({
     content: String,
