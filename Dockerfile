@@ -9,4 +9,5 @@ RUN rm -rf node_modules; npm install
 RUN npm run build
 
 EXPOSE 3001
-CMD ["node", "server/server.js"]
+CMD ["npm", "run", "production"]
+
